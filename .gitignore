@@ -1,0 +1,4 @@
+*.DStore
+*.html
+__pycache__*
+README_files
