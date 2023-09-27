@@ -135,7 +135,7 @@ digits = datasets.load_digits()
 n_samples = len(digits.data)
 X_train, X_test, Y_train, Y_test = model_selection.train_test_split(digits.data,
                                                                     digits.target, 
-                                                                    test_size=0.8,
+                                                                    test_size=0.2,
                                                                     random_state=50)
 
 # construction des courbes d'erreurs commises en fonction de la profondeur maximale de l'arbre sur les données d'apprentissage
@@ -224,7 +224,7 @@ plt.fill_between(n_samples, test_scores_mean -1.96*test_scores_std,
 plt.plot(n_samples, train_scores_mean,"o-", label="échantillon d'apprentissage", color="green")
 plt.plot(n_samples, test_scores_mean, "o-", label="échantillon test")
 plt.legend(loc="lower right")
-plt.xlabel("Taille d'Échantillon d'Entraînement")
+plt.xlabel("Taille d'Échantillon d'Apprentissage")
 plt.ylabel("Précision")
 plt.title("Courbes d'Apprentissage pour le Meilleur Arbre de Décision")
 

@@ -64,7 +64,7 @@ sigma = 0.1
 data = rand_checkers(n1, n2, n3, n4, sigma)
 ```
 
-Afin de créer des courbes donnant le pourcentage d’erreurs commises en fonction de la profondeur maximale de l’arbre, il faut d'abord construire nos arbres en utilisant soit le critère d'entropie soit celui de l'indice de Gini.
+Afin de créer des courbes donnant le pourcentage d’erreurs commises en fonction de la profondeur maximale de l’arbre, il est nécessaire de séparer les données en deux sous-ensembles étant l'échantillon d'apprentissage et l'échantillon de test. Il faut ensuite construire nos arbres en utilisant soit le critère d'entropie soit celui de l'indice de Gini.
 
 ```{python}
 #| code-fold: true
@@ -115,11 +115,11 @@ plt.ylabel("Proportion d'Erreurs")
 plt.draw()
 ```
 
-On remarque que les deux courbes se comportent de la même façon : le pourcentage d'erreur décroît pendant que la profondeur maximale de l'arbre croît. En particulier, il est proche de $0$ lorsque la profondeur maximale de l'arbre dépasse $10$. On peut en déduire que le modèle apprend et que ce classifieur est un bon classifieur.
+Ici, on choisit une profondeur maximale égale à $12$ puisqu'au delà, l'erreur avoisine $0$. On remarque que les deux courbes se comportent de la même façon : le pourcentage d'erreur décroît pendant que la profondeur maximale de l'arbre croît. En particulier, il est proche de $0$ lorsque la profondeur maximale de l'arbre dépasse $10$. En effet, ce phénomène se comprend intuitivement par le fait que plus l'arbre est profond, plus les données se distinguent par des caractéristiques et plus les classes formées sont homogènes.
 
 @) **Afficher la classification obtenue en utilisant la profondeur qui minimise le pourcentage d’erreurs obtenues avec l’entropie (utiliser si besoin les fonctions `plot_2d` et `frontiere` du fichier source).**
 
-La classification obtenue en utilisant la profondeur qui minimise le pourcentage d'erreurs obtenues avec l'entropie peut être visualisée à l'aide de la fonction `frontiere` comme suit :
+La classification obtenue, en utilisant la profondeur qui minimise le pourcentage d'erreurs obtenues avec l'entropie, peut être visualisée à l'aide de la fonction `frontiere` comme suit :
 
 ```{python}
 #| code-fold: true
@@ -235,6 +235,8 @@ print("Proportion Moyenne d'Erreurs avec le Critère de Gini :{:.2f}%".format(er
 
 On constate que la proportion d'erreurs est légèrement plus élevée pour l'arbre de décisions basé sur le critère d'entropie que pour celui basé sur le critère de Gini. Ainsi, on peut supposer que la prédiction des échantillons est meilleure en terme de précision.
 
+De plus, on remarque que l'erreur ne s'annule pas ce qui s'explique par le simple fait que l'échantillon test est différent de l'échantillon d'apprentissage. Cependant, la proportion d'erreurs décroît tout de même lorsque la profondeur de l'arbre augmente puisque les données sont partitionnées de façon plus homogène à chaque nouveau noeud.
+
 @) **Reprendre les questions précédentes pour le dataset digits. Ce jeu de données est disponible dans le module sklearn.datasets. On peut l’importer avec la fonction load_digits du dit module**
 
 On va maintenant réitérer les questions précédentes pour le jeu de données `digits` présent dans le module `sklearn.datasets`. Ici, les données d'apprentissage et de test ne peuvent pas être simulées d'où le partitionnement du jeu de données suivant :
@@ -245,7 +247,7 @@ digits = datasets.load_digits()
 n_samples = len(digits.data)
 X_train, X_test, Y_train, Y_test = model_selection.train_test_split(digits.data, 
                                                                     digits.target, 
-                                                                    test_size=0.8,
+                                                                    test_size=0.2,
                                                                     random_state=50)   
 ```
 
@@ -280,7 +282,7 @@ plt.ylabel("Proportion d'Erreurs")
 plt.draw()
 ```
 
-Or, l'objectif in fine est d'étudier les courbes d'erreurs sur l'échantillon test pour conclure sur la fiabilité de l'arbre de décisions.
+Ici, la proportion décroît jusqu'à atteindre $0$ de la même façon qu'observé précédemment. Or, l'objectif in fine est d'étudier les courbes d'erreurs sur l'échantillon test pour conclure sur la fiabilité de l'arbre de décisions.
 
 ```{python}
 #| code-fold: true
@@ -379,9 +381,9 @@ plt.fill_between(n_samples, test_scores_mean -1.96*test_scores_std,
 plt.plot(n_samples, train_scores_mean,"o-", label="échantillon d'apprentissage", color="green")
 plt.plot(n_samples, test_scores_mean, "o-", label="échantillon test")
 plt.legend(loc="lower right")
-plt.xlabel("Taille d'Échantillon d'Entraînement")
+plt.xlabel("Taille d'Échantillon d'Apprentissage")
 plt.ylabel("Précision")
 plt.title("Courbes d'Apprentissage pour le Meilleur Arbre de Décision")
 ```
 
-À partir de ce graphe de courbes d'apprentissage, on constate l'échantillon test possède une précision croissante avec la taille d'échantillon d'entraînement indiquant une bonne fiabilité du modèle.
+À partir de ce graphe de courbes d'apprentissage, on constate l'échantillon test possède une précision croissante avec la taille d'échantillon d'entraînement : ce phénomène est cohérent puisque plus l'échantillon est grand, plus on apprend. Inversement, l'apprentissage est moindre lorsque la taille d'échantillon d'apprentissage est petite, la proportion d'erreurs commises est alors plus élevée.
