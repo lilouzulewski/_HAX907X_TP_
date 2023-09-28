@@ -19,7 +19,7 @@ execute:
 ---
 \newpage
 
-L'objectif de ce TP est d'étudier les arbres de décision et la sélection de modèle, notamment dans le cardre de la classification.
+L'objectif de ce TP est d'étudier les arbres de décision et la sélection de modèle, notamment dans le cadre de la classification.
 
 # Classification avec les arbres
 
